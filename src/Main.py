@@ -1,3 +1,5 @@
+import os
+
 def Euclidean(x1, x2, y1, y2):
     hasil = ((y2-y1)**2 + (x2-x1)**2)**(0.5)
     hasil = float("{:.2f}".format(hasil))
@@ -19,10 +21,34 @@ class Graf:
             print()
 
 # Euclidean(5,3,2,9)
-file_data = open("test/tc1.txt", "r")
-data = file_data.readlines()
-for i in range(len(data)):
-    data[i] = data[i].replace("\n", "")
+print("-----------------------------")
+print("|  Silahkan input nama file |")
+print("|        (eg : tc1)         |")
+print("|   (Tanpa ekstensi file)   |")
+print("-----------------------------")
+
+print()
+
+# filename = input("Input nama file : ") # dicomment buat sementara agar mudah
+filename = "tc1"
+path = "../test/" + filename + ".txt"
+
+isfile = os.path.isfile(path)
+
+# Melakukan pengecekan apakah filename terdapat pada folder test atau tidak
+while (not isfile):
+    filename = input("Ulangi input nama file : ")
+    path = "../test/" + filename + ".txt"
+    isfile = os.path.isfile(path)
+
+file_data = open(path, "r")
+
+data = file_data.read().splitlines() # baca file teks (dengan readlines yang sekaligus hapus \n)
+
+# print(data)
+
+# for i in range(len(data)):
+#     data[i] = data[i].replace("\n", "")
 
 n_node = int(data[0])
 print("n node ", n_node)
