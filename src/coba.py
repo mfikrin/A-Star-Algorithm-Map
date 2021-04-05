@@ -27,36 +27,6 @@ for i in range(8):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # print("A")
 # print(file)
 # baris = 0
