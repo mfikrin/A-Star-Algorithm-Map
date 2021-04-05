@@ -3,12 +3,19 @@ import os
 def Euclidean(x1, x2, y1, y2):
     hasil = ((y2-y1)**2 + (x2-x1)**2)**(0.5)
     hasil = float("{:.2f}".format(hasil))
+    # hasil = int(hasil)
     # print(type(hasil))
     return(hasil)
 
 def addEdge(adj, u, v):
     adj[u].append(v)
     adj[v].append(u)
+
+# def display_mat(matriks):
+#     for i in range(len(matriks):
+#         for j in range(len(matriks)):
+#             print(matriks[i][j], end="\t")
+#         print()
 
 class Graf:
     
@@ -35,7 +42,7 @@ print()
 # filename = input("Input nama file : ") # dicomment buat sementara agar mudah
 filename1 = "tc1"
 filename2 = "tc1_2"
-test = "./test/"
+test = "../test/"
 path1 = test + filename1 + ".txt"
 path2 = test + filename2 + ".txt"
 
@@ -58,6 +65,10 @@ file_edge = open(path2, "r")
 
 data = file_data.read().splitlines() # baca file teks (dengan readlines yang sekaligus hapus \n)
 edge = file_edge.read().splitlines()
+
+
+
+
 # print(data)
 
 # for i in range(len(data)):
@@ -81,6 +92,31 @@ for i in range(len(data)):
 
     int_data[i][0] = int(x[0])
     int_data[i][1] = int(x[1])
+
+
+mat_edge = [[0 for j in range(n_node)] for i in range(n_node)]
+
+baris = 0
+kolom = 0
+print(edge)
+for i in range(len(edge)):
+    # print(len(file[i]))
+    # print(str(i) + "woi")
+    for j in range(len(edge[i])):
+        # print(files[i][j])
+        if j % 2 == 0:
+            mat_edge[baris][kolom] = int(edge[i][j])
+            kolom += 1
+    baris += 1
+    kolom = 0
+
+
+for i in range(8):
+    for j in range(8):
+        print(mat_edge[i][j], end=" ")
+    print()
+
+
 
 
 
@@ -116,3 +152,18 @@ for i in range(len(data)):
         g.add_element(i,i,0)
 
 g.display_matrix()
+
+mat_mix = [[0 for j in range(n_node)] for i in range(n_node)]
+
+for i in range(8):
+    for j in range(8):
+        if mat_edge[i][j] == 1:
+            mat_mix[i][j] = g.matrix[i][j]
+
+
+for i in range(8):
+    for j in range(8):
+        print(mat_mix[i][j], end="\t")
+    print()
+
+
