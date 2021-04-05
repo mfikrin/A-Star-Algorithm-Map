@@ -42,7 +42,7 @@ print()
 # filename = input("Input nama file : ") # dicomment buat sementara agar mudah
 filename1 = "tc1"
 filename2 = "tc1_2"
-test = "../test/"
+test = "./test/"
 path1 = test + filename1 + ".txt"
 path2 = test + filename2 + ".txt"
 
@@ -139,8 +139,16 @@ for i in range(len(data)):
         # matriks_adj[i][i] = 0
         g.add_element(i,i,0)
 
+print("bobot semua")
 g.display_matrix()
-
+# 0       1.41    7.28    5.0     7.28    5.1     1.0     4.47
+# 1.41    0       8.54    5.0     8.06    6.32    1.0     5.83
+# 7.28    8.54    0       7.21    4.0     2.24    7.62    3.0
+# 5.0     5.0     7.21    0       4.47    5.39    4.24    6.08
+# 7.28    8.06    4.0     4.47    0       3.61    7.07    5.0
+# 5.1     6.32    2.24    5.39    3.61    0       5.39    1.41
+# 1.0     1.0     7.62    4.24    7.07    5.39    0       5.0
+# 4.47    5.83    3.0     6.08    5.0     1.41    5.0     0
 mat_mix = [[0 for j in range(n_node)] for i in range(n_node)]
 
 for i in range(8):
@@ -153,6 +161,17 @@ for i in range(8):
 #     for j in range(8):
 #         print(mat_mix[i][j], end="\t")
 #     print()
-
+print("woi")
 display_mat(mat_mix,n_node,n_node)
+print("a*")
 
+def a_star(nodeAwal, nodeAkhir): #nodeAwal dan nodeAkhir int
+    mini = 0
+    arr = []
+    for i in range(len(mat_mix[nodeAwal])):
+        if mat_mix[nodeAwal][i] != 0 :
+            total = mat_mix[nodeAwal][i] + g.matrix[i][nodeAkhir]
+            arr.append(total)
+    print(arr)
+
+a_star(0, 7)
