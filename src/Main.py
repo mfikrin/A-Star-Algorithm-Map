@@ -1,4 +1,5 @@
 import os
+import matplotlib.pyplot as plt
 
 def Euclidean(x1, x2, y1, y2):
     hasil = ((y2-y1)**2 + (x2-x1)**2)**(0.5)
@@ -42,7 +43,7 @@ print()
 # filename = input("Input nama file : ") # dicomment buat sementara agar mudah
 filename1 = "tc1"
 filename2 = "tc1_2"
-test = "../test/"
+test = "./test/"
 path1 = test + filename1 + ".txt"
 path2 = test + filename2 + ".txt"
 
@@ -352,4 +353,48 @@ def Get_Short_Path(nodeAwal,nodeAkhir):
 # print(totals)
 
 Get_Short_Path("A","H")
+# # x axis values
+# x = [5,4,1,7,3,4,6,7,5]
+# # corresponding y axis values
+# y = [2,1,5,6,9,2,7,9,2]
+# plt.plot(x, y, label = "line 1", marker='o')
+
+axis = []
+ordinat = []
+for i in range(n_node):
+    for j in range(n_node):
+        if mat_edge[i][j] == 1:
+            varx = [int_data[i][0],int_data[j][0]]
+            vary = [int_data[i][1],int_data[j][1]]
+            axis.append(varx)
+            ordinat.append(vary)
+
+print(axis)
+print(ordinat)
+# fake_axis = [[5, 4], [5, 7], [4, 1], [7, 6], [1, 7], [3, 4], [3, 7], [6, 4]]
+# fake_ordinat = [[2, 1], [2, 9], [1, 5], [9, 7], [5, 6], [9, 2], [9, 6], [7, 2]]
+for i in range(len(axis)):
+    plt.plot(axis[i], ordinat[i], marker='o', color = "blue")
+for i in range(len(int_data)):
+    plt.annotate(get_key(i),(int_data[i][0], int_data[i][1]))
+
+rute_axis = []
+rute_ordinat = []
+for i in range(len(rute)):
+    rute_axis.append(int_data[dict[rute[i]]][0])
+    rute_ordinat.append(int_data[dict[rute[i]]][1])
+plt.plot(rute_axis, rute_ordinat, label = "shortest path", marker='o', color = "red")
+
+plt.xlabel('x - axis')
+plt.ylabel('y - axis')
+
+plt.legend()
+
+plt.title('Map')
+  
+plt.show()
+name = input()
+plt.title(name)
+plt.show()
+
 
