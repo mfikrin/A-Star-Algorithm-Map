@@ -42,7 +42,7 @@ print()
 # filename = input("Input nama file : ") # dicomment buat sementara agar mudah
 filename1 = "tc1"
 filename2 = "tc1_2"
-test = "./test/"
+test = "../test/"
 path1 = test + filename1 + ".txt"
 path2 = test + filename2 + ".txt"
 
@@ -70,7 +70,12 @@ n_node = int(data[0])
 print("n node ", n_node)
 data.remove(data[0])
 int_data = [[0 for j in range(2)] for i in range(len(data))]
+
+arr_node = []
 for i in range(len(data)):
+
+    node = data[i][0]
+    arr_node.append(node)
     string = data[i][2:len(data[i])]
     x = string.split(",")
     # print(string)
@@ -80,7 +85,17 @@ for i in range(len(data)):
 
     int_data[i][0] = int(x[0])
     int_data[i][1] = int(x[1])
+print("ARR NODE")
+print(arr_node)
 
+dict = {}
+idx = 0
+for node in arr_node:
+    dict[node] = idx
+    idx+= 1
+
+print("DICt")
+print(dict)
 
 mat_edge = [[0 for j in range(n_node)] for i in range(n_node)]
 
@@ -165,13 +180,176 @@ print("woi")
 display_mat(mat_mix,n_node,n_node)
 print("a*")
 
-def a_star(nodeAwal, nodeAkhir): #nodeAwal dan nodeAkhir int
-    mini = 0
-    arr = []
-    for i in range(len(mat_mix[nodeAwal])):
-        if mat_mix[nodeAwal][i] != 0 :
-            total = mat_mix[nodeAwal][i] + g.matrix[i][nodeAkhir]
-            arr.append(total)
-    print(arr)
 
-a_star(0, 7)
+dict_temp = {}
+idx = 0
+for node in arr_node:
+    dict_temp[node] = 0
+
+
+
+# A B
+# A C
+# B D
+# C F
+# D H
+# E G
+# E H
+# F G
+
+# rute = ["A","B"]
+def calculate_gn(rute,nodeN):
+    gn = 0
+    for i in range(len(rute)):
+        if (i != len(rute) - 1):
+            gn += mat_mix[dict[rute[i]]][dict[rute[i+1]]] 
+        else:
+            gn += mat_mix[dict[rute[i]]][dict[nodeN]]
+    return gn
+
+print("HELOOOW")
+# nilai = calculate_gn(rute,"D")
+
+# print(nilai)
+    
+def get_key(val):
+    for node,value in dict.items():
+         if val == value:
+             return node
+
+arrs = [[7.24, 1], [10.280000000000001, 2]]
+def min_arr(arr_total): # return node yg minimal total dr gn + hn nya
+    min = arr_total[0][0]
+    idx_min = 0
+    for i in range(1,len(arr_total)):
+        if (arr_total[i][0] < min):
+            min = arr_total[i][0]
+            idx_min = i
+    return idx_min
+a = min_arr(arrs)
+print("AAA")
+print(a)
+
+# get_key(arr_total[idx_min][1])
+
+# def get_node(rute):
+#     for i in range()
+
+arr = []
+
+# A = [1,2,3]
+def copy_arr(arr):
+    neo = []
+    for i in range(len(arr)):
+        neo.append(arr[i])
+    return neo
+
+# def modif_arr(arr,arr_modif):
+#     # arr = []
+#     # arr.clear()
+#     for i in range(len(arr_modif)):
+#         arr.append(arr_modif)
+
+# copy_arr(A)
+
+# def is_in_arr(nodeGoal,arr):
+
+
+rute = []
+def a_star(nodeAwal, nodeAkhir,iterasi): #nodeAwal dan nodeAkhir int
+
+    iterasi += 1
+
+    rute.append(nodeAwal)
+    print("RUTE")
+    print(rute)
+
+    for i in range(len(mat_mix[dict[nodeAwal]])):
+        if mat_mix[dict[nodeAwal]][i] != 0 :
+            # gn = mat_mix[dict[nodeAwal]][i]
+            # path = []
+            print("i :" + str(i))
+            nodeN = get_key(i)
+
+            gn = calculate_gn(rute,nodeN)
+            print("gn :"+str(gn))
+            hn = g.matrix[i][dict[nodeAkhir]]
+            print("hn :"+str(hn))
+            total = gn + hn
+            print("total :" +str(total))
+            # path.append(dict[nodeAwal])
+            # path.append(i)
+            # print("APPEND")
+            # print(path)
+            rute.append(get_key(i))
+            copy_rute = copy_arr(rute)
+            print(rute)
+            arr_total = [total,copy_rute]
+            print("ARR TOTAL")
+            print(arr_total)
+            arr.append(arr_total)
+            print("ARR")
+            print(arr)
+            del rute[len(rute)-1:len(rute)]
+            print("RUTE")
+            print(rute)
+            print("ARR TOTA")
+
+
+
+    print("ARRRRRR")
+    print(arr)
+    idx_min = min_arr(arr)
+    # print(arr)
+    # rute.append(get_key(arr[idx_min][1]))
+    temp = arr[idx_min]
+    print("yemp")
+    print(temp)
+    del arr[idx_min:idx_min + 1]
+    print("AFTER DELE")
+    print(arr)
+    print(rute)
+    print(str(iterasi) + "Selesai")
+    # print(temp[1])
+    node = temp[1][len(temp[1])-1]
+    if (node == nodeAkhir):
+        print("Rute Terpendek : ")
+        jarak = calculate_gn(rute,node)
+        rute.append(node)
+        print("rute : ", end=" ")
+        print(rute)
+        print("Iterasi : " + str(iterasi))
+        print("Jarak : " + str(jarak))
+
+    else:
+        print(dict[temp[1][len(temp[1])-1]])
+        # rute.clear()
+        # print("before modif")
+        # print(rute)
+        # # modif_arr(rute,temp[1])
+        # print("After modif")
+        # print(rute)
+        rute.clear()
+
+        for i in range(len(temp[1])):
+            rute.append(temp[1][i])
+        print("RUTE ABIS CLEAR")
+        print(rute)
+        del rute[len(rute)-1:len(rute)]
+        # rute = temp[1]
+        # rute = copy_arr(temp[1])
+        # rute = copy_arr(temp[1])
+        a_star(get_key(dict[temp[1][len(temp[1])-1]]),nodeAkhir,iterasi)
+
+
+
+def Get_Short_Path(nodeAwal,nodeAkhir):
+    iterasi = 0
+    a_star(nodeAwal,nodeAkhir,iterasi)
+# arrr = ["A","B","D"]
+#
+# totals = calculate_gn(arrr,"H")
+# print(totals)
+
+Get_Short_Path("A","H")
+
