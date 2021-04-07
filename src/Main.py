@@ -70,23 +70,52 @@ for i in range(len(edge)):
 
 g = gr.Graf(n_node)
 
+print("-----------------------------")
+print("|   Silahkan input opsi     |")
+print("|   1. Koordinat Peta       |")
+print("|   2. Koordinat Kartesian  |")
+print("-----------------------------")
 
-# Membuat matriks koordinat node
-for i in range(len(data)):
-    for j in range(i+1,len(data)):
-        m = int_data[i]
-        n = int_data[j]
+pil = int(input("Input opsi koordinat : "))
 
-        x1 = m[0]
-        y1 = m[1]
-        x2 = n[0]
-        y2 = n[1]
-        jarak = ut.Euclidean(x1,x2,y1,y2)
-        g.add_element(i,j,jarak)
-        g.add_element(j,i,jarak)
-        g.add_element(i,i,0)
+while (pil != 1 and pil != 2):
+    pil = int(input("Ulangi input pilihan, pastikan pilihan 1 atau 2 : "))
+if pil == 2:
+    # Membuat matriks koordinat node
+    for i in range(len(data)):
+        for j in range(i+1,len(data)):
+            m = int_data[i]
+            n = int_data[j]
+
+            x1 = m[0]
+            y1 = m[1]
+            x2 = n[0]
+            y2 = n[1]
+            jarak = ut.Euclidean(x1,x2,y1,y2)
+            g.add_element(i,j,jarak)
+            g.add_element(j,i,jarak)
+            g.add_element(i,i,0)
+else:
+    # Membuat matriks koordinat node
+    for i in range(len(data)):
+        for j in range(i + 1, len(data)):
+            m = int_data[i]
+            n = int_data[j]
+
+            x_lat1 = m[0]
+            y_lon1 = m[1]
+            x_lat2 = n[0]
+            y_lon2 = n[1]
+            jarak = ut.Haversine(x_lat1, x_lat2, y_lon2, y_lon2)
+            g.add_element(i, j, jarak)
+            g.add_element(j, i, jarak)
+            g.add_element(i, i, 0)
+
+print("MATRKS")
+ut.display_mat(g.matrix,n_node,n_node)
 
 mat_mix = [[0 for j in range(n_node)] for i in range(n_node)]
+
 
 for i in range(n_node):
     for j in range(n_node):
@@ -136,13 +165,10 @@ def Get_Short_Path(nodeAwal,nodeAkhir):
 def a_star(nodeAwal, nodeAkhir,iterasi):
     iterasi += 1
     rute.append(nodeAwal)
-    # print(rute)
-    # print("Iterasi " +str(iterasi))
-    # print(arr)
     if (is_have_edge(nodeAwal) == 1 and iterasi != 1):
-        # print("HOHO")
         if (len(arr) == 0):
-            print("GA BISA NIH WKWK")
+            print("Tidak bisa mencapai lokasi tujuan")
+            rute.append("NO")
         else:
             for i in range(len(mat_mix[dict[nodeAwal]])):
                 if mat_mix[dict[nodeAwal]][i] != 0:
@@ -161,10 +187,6 @@ def a_star(nodeAwal, nodeAkhir,iterasi):
             if (len(arr) != 0):
                 idx_min = ut.min_arr(arr)
                 temp = arr[idx_min]
-                # print("ARR")
-                # print(arr)
-                # print("TEMP")
-                # print(temp)
                 del arr[idx_min:idx_min + 1]
                 node = temp[1][len(temp[1])-1]
                 if (node == nodeAkhir):
@@ -173,6 +195,7 @@ def a_star(nodeAwal, nodeAkhir,iterasi):
                     rute.append(node)
                     print("rute : ", end=" ")
                     print(rute)
+                    rute.append("YES")
                     print("Iterasi : " + str(iterasi))
                     print("Jarak : " + str(jarak))
 
@@ -181,16 +204,14 @@ def a_star(nodeAwal, nodeAkhir,iterasi):
 
                     for i in range(len(temp[1])):
                         rute.append(temp[1][i]) # Isi Kembali Rute
-                    # print("RITEEE")
-                    # print(rute)
+
                     del rute[len(rute)-1:len(rute)]
-                    # print("AFTER DELETE")
-                    # print(rute)
 
                     # recursive
                     a_star(get_key(dict[temp[1][len(temp[1])-1]]),nodeAkhir,iterasi)
             else: # klw node awal ga punya tetangga
                 print("Tidak ada rute yang dapat dilalui")
+                rute.append("NO")
             # else:
             #     print("Tidak bisa mencapai lokasi tujuan Anda")
     else:
@@ -222,6 +243,7 @@ def a_star(nodeAwal, nodeAkhir,iterasi):
                 rute.append(node)
                 print("rute : ", end=" ")
                 print(rute)
+                rute.append("YES")
                 print("Iterasi : " + str(iterasi))
                 print("Jarak : " + str(jarak))
 
@@ -240,6 +262,7 @@ def a_star(nodeAwal, nodeAkhir,iterasi):
                 a_star(get_key(dict[temp[1][len(temp[1]) - 1]]), nodeAkhir, iterasi)
         else: # klw node awal ga punya tetangga
             print("Tidak ada rute yang dapat dilalui")
+            rute.append("NO")
         # else:
         #     print("Tidak bisa mencapai lokasi tujuan Anda")
 
@@ -293,23 +316,25 @@ for i in range(len(axis)):
 for i in range(len(int_data)):
     plt.annotate(get_key(i), (int_data[i][0], int_data[i][1]))
 
-rute_axis = []
-rute_ordinat = []
-for i in range(len(rute)):
-    rute_axis.append(int_data[dict[rute[i]]][0])
-    rute_ordinat.append(int_data[dict[rute[i]]][1])
+# rute_axis = []
+# rute_ordinat = []
+# for i in range(len(rute)-1):
+#     rute_axis.append(int_data[dict[rute[i]]][0])
+#     rute_ordinat.append(int_data[dict[rute[i]]][1])
 
 rute_axis = []
 rute_ordinat = []
-for i in range(len(rute)):
+for i in range(len(rute)-1):
     rute_axis.append(int_data[dict[rute[i]]][0])
     rute_ordinat.append(int_data[dict[rute[i]]][1])
-plt.plot(rute_axis, rute_ordinat, label="shortest path", marker='o', color="red")
+if (rute[len(rute)-1] == "YES"): # Klw sampai ke node akhir / tujuan
+    plt.plot(rute_axis, rute_ordinat, label="shortest path", marker='o', color="red")
+    plt.legend()
 
 plt.xlabel('x - axis')
 plt.ylabel('y - axis')
 
-plt.legend()
+
 
 plt.title('Map')
 

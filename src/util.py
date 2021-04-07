@@ -1,4 +1,4 @@
-# import Main as main
+from math import radians, cos, sin, asin, sqrt
 
 def Euclidean(x1, x2, y1, y2):
     hasil = ((y2-y1)**2 + (x2-x1)**2)**(0.5)
@@ -29,3 +29,20 @@ def copy_arr(arr):
     for i in range(len(arr)):
         neo.append(arr[i])
     return neo
+
+def Haversine(lat1, lat2, lon1, lon2):
+    lon1 = radians(lon1)
+    lon2 = radians(lon2)
+    lat1 = radians(lat1)
+    lat2 = radians(lat2)
+
+    dif_lon = lon2 - lon1
+    dif_lat = lat2 - lat1
+    a = sin(dif_lat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dif_lon / 2) ** 2
+
+    c = 2 * asin(sqrt(a))
+
+
+    r = 6371 # Jari - jari bumi dlm km
+
+    return (c * r)
