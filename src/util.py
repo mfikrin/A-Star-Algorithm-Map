@@ -46,3 +46,10 @@ def Haversine(lat1, lat2, lon1, lon2):
     r = 6371 # Jari - jari bumi dlm km
 
     return (c * r)
+
+def display_array(arr):
+    for i in range(len(arr)):
+        if (i != len(arr)-1):
+            print(arr[i], end=" -> ")
+        else:
+            print(arr[i])

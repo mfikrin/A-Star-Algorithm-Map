@@ -43,12 +43,27 @@ int_data = [[0 for j in range(2)] for i in range(len(data))]
 
 arr_node = []
 for i in range(len(data)):
-    node = data[i][0]
+
+    # print("NODE")
+    # print(node)
+    idx_titik_dua = data[i].index(':')
+    node = data[i][:(idx_titik_dua)]
+    # print("idx" +str(idx_titik_dua))
     arr_node.append(node)
-    string = data[i][2:len(data[i])]
+    string = data[i][idx_titik_dua + 1:len(data[i])]
     x = string.split(",")
-    int_data[i][0] = int(x[0])
-    int_data[i][1] = int(x[1])
+    # print(x[0][0])
+    # if (x[0][0] == "-"):
+    if (x[0][0] == "-"):
+        int_data[i][0] = -(float(x[0][1:]))
+    else:
+        int_data[i][0] = float(x[0])
+    # int_data[i][0] = int(x[0])
+
+    if (x[1][0] == "-"):
+        int_data[i][1] = -(float(x[1][1:]))
+    else:
+        int_data[i][1] = float(x[1])
 
 dict = {}
 idx = 0
@@ -111,8 +126,8 @@ else:
             g.add_element(j, i, jarak)
             g.add_element(i, i, 0)
 
-print("MATRKS")
-ut.display_mat(g.matrix,n_node,n_node)
+# print("MATRKS")
+# ut.display_mat(g.matrix,n_node,n_node)
 
 mat_mix = [[0 for j in range(n_node)] for i in range(n_node)]
 
@@ -150,7 +165,7 @@ def is_have_edge(node):
             count += 1
     return count
 
-is_have_edge("H")
+# is_have_edge("H")
 
 def Get_Short_Path(nodeAwal,nodeAkhir):
     iterasi = 0
@@ -176,8 +191,11 @@ def a_star(nodeAwal, nodeAkhir,iterasi):
                     nodeN = get_key(i)
 
                     gn = calculate_gn(rute,nodeN)
+                    # print(gn)
                     hn = g.matrix[i][dict[nodeAkhir]]
+                    # print(hn)
                     total = gn + hn
+                    # print(total)
                     rute.append(get_key(i))
                     copy_rute = ut.copy_arr(rute)
                     arr_total = [total,copy_rute]
@@ -193,8 +211,9 @@ def a_star(nodeAwal, nodeAkhir,iterasi):
                     print("Rute Terpendek : ")
                     jarak = calculate_gn(rute,node)
                     rute.append(node)
-                    print("rute : ", end=" ")
-                    print(rute)
+                    print("Rute : ", end=" ")
+                    # print(rute)
+                    ut.display_array(rute)
                     rute.append("YES")
                     print("Iterasi : " + str(iterasi))
                     print("Jarak : " + str(jarak))
@@ -220,8 +239,11 @@ def a_star(nodeAwal, nodeAkhir,iterasi):
                 nodeN = get_key(i)
 
                 gn = calculate_gn(rute, nodeN)
+                # print(gn)
                 hn = g.matrix[i][dict[nodeAkhir]]
+                # print(hn)
                 total = gn + hn
+                # print(total)
                 rute.append(get_key(i))
                 copy_rute = ut.copy_arr(rute)
                 arr_total = [total, copy_rute]
@@ -237,12 +259,14 @@ def a_star(nodeAwal, nodeAkhir,iterasi):
             # print(temp)
             del arr[idx_min:idx_min + 1]
             node = temp[1][len(temp[1]) - 1]
+            # print(node)
             if (node == nodeAkhir):
                 print("Rute Terpendek : ")
                 jarak = calculate_gn(rute, node)
                 rute.append(node)
                 print("rute : ", end=" ")
-                print(rute)
+                # print(rute)
+                ut.display_array(rute)
                 rute.append("YES")
                 print("Iterasi : " + str(iterasi))
                 print("Jarak : " + str(jarak))
@@ -296,10 +320,17 @@ def is_in_dict(nodeInput):
             return True
     return False
 
+print("List Daerah : ")
+for i in range(len(arr_node)):
+    print(str(i+1) + ". "+arr_node[i])
+
 print("-----------------------------")
 print("|   Dari mana mau ke mana   |")
 print("|           ???             |")
 print("-----------------------------")
+
+
+
 
 nodeAwal = input("Input asal (Node Awal) : ")
 while(not is_in_dict(nodeAwal)):
